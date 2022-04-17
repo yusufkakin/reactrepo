@@ -22,37 +22,61 @@ const App = () => {
   return (
     <div>
       <h2>give feedback</h2>
-      <Button increaseOne={increaseOne} neutralOne={neutralOne} decreaseOne={decreaseOne}/>
-      {showText ? <Statistics good={good} neutral={neutral} bad={bad} /> : <div><h2>statistics</h2><p>no feedback given</p></div>}
+      <Button
+        increaseOne={increaseOne}
+        neutralOne={neutralOne}
+        decreaseOne={decreaseOne}
+      />
+      {showText ? (
+        <Statistics good={good} neutral={neutral} bad={bad} />
+      ) : (
+        <div>
+          <h2>statistics</h2>
+          <p>no feedback given</p>
+        </div>
+      )}
     </div>
   );
 };
 
-const Button = ({increaseOne, neutralOne, decreaseOne}) => {
+const Button = ({ increaseOne, neutralOne, decreaseOne }) => {
   return (
-  <div>
-    <button onClick={increaseOne}>good</button>
+    <div>
+      <button onClick={increaseOne}>good</button>
       <button onClick={neutralOne}>neutral</button>
       <button onClick={decreaseOne}>bad</button>
-  </div>
-)
-}
+    </div>
+  );
+};
 const Statistics = ({ good, neutral, bad }) => {
   const allstates = [good, neutral, bad];
   const sumUp = allstates.reduce((a, b) => a + b, 0);
   const averageUp = (good * 1 + bad * -1) / sumUp;
-  const posFeedback = good / sumUp;
+  const posFeedback = Math.round(good / sumUp * 100) + " %" ;
   return (
     <div>
       <h2>statistics</h2>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {sumUp}</p>
-      <p>average {averageUp}</p>
-      <p>positive {posFeedback} %</p>
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="all" value={sumUp} />
+      <StatisticLine text="average" value={averageUp} />
+      <StatisticLine text="positive" value={posFeedback} />
     </div>
   );
 };
 
+const StatisticLine = ({ text, value }) => {
+  return (
+    <div>
+      <table>
+        <tbody>
+          <tr>
+            <td>{text}</td><td>{value}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+};
 export default App;
